@@ -12,7 +12,8 @@ var API = function(api_key, api_secret) {
     return {
         Info: require('./routes/info')(settings),
         Public: require('./routes/public')(settings),
-        Trade: require('./routes/trade')(settings)
+        Trade: require('./routes/trade')(settings),
+        Withdraw: require('./routes/withdraw')(settings)
     };
 }
 

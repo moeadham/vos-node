@@ -32,25 +32,19 @@ function Call(endpoint, options, cb) {
 	//console.log(params);
 	//console.log(options);
 	
-    Core.post(endpoint, params, cb, Trade.settings);
+    Core.post(endpoint, params, cb, Withdraw.settings);
 }
 
-var Trade = {
-    place: function(opts, cb) {
-        Call('/trade/place', {
-            requires: 'type order_currency units payment_currency price'.split(' '),
-            params: opts
-        }, cb);
-    },
-    cancel: function(opts, cb) {
-        Call('/trade/cancel', {
-            requires: 'order_id'.split(' '),
+var Withdraw = {
+    transfer: function(opts, cb) {
+        Call('/withdraw/transfer', {
+            requires: 'currency quantity address'.split(' '),
             params: opts
         }, cb);
     }
 };
 
 module.exports = function(settings) {
-    Trade.settings = settings;
-    return Trade;
+    Withdraw.settings = settings;
+    return Withdraw;
 };

@@ -115,4 +115,4 @@ var Info = {
 module.exports = function(settings) {
     Info.settings = settings;
     return Info;
-}
+};

@@ -2,7 +2,7 @@ var _ = require('underscore'),
     request = require('request'),
     Exception = require('../core/exceptions'),
     Signature = require('../core/signature'),
-    qs = require('querystring');
+    qs = require('qs');
 
 var Settings = {
     host: 'https://api.vaultofsatoshi.com'
@@ -11,7 +11,7 @@ var Settings = {
 Settings.set_options = function(endpoint, data, settings) {
     var options = {};
 
-    if(endpoint.indexOf('/info') === 0) {
+    if(endpoint.indexOf('/info') === 0 || endpoint.indexOf('/trade') === 0 || endpoint.indexOf('/withdraw') === 0) {
         // signature time!
         data.nonce = Signature.nonce();
         var signature = Signature.sign(endpoint, data, settings.api_secret);
@@ -30,12 +30,13 @@ Settings.set_options = function(endpoint, data, settings) {
     options.json = true;
 
     return options;
-}
+};
 
 Settings.get = function(endpoint, data, cb, settings) {
     var options = Settings.set_options(endpoint, data, settings);
-    request(options, function(e, r, b) {
+    request(options, cb);/*function(e, r, b) {
         if(!e) {
+            //console.log(b);
             if(b.status === 'error') {
                 console.log(options);
             }
@@ -44,14 +45,14 @@ Settings.get = function(endpoint, data, cb, settings) {
         else {
             console.log(e);
         }
-    });
+    });*/
 };
 
 Settings.post = function(endpoint, data, cb, settings) {
     var options = Settings.set_options(endpoint, data, settings);
     options.method = 'post';
 
-    request(options, function(e, r, b){ 
+    request(options, cb);/*function(e, r, b){ 
         if(!e) {
             try {
                 if(b.status  !== 'success') {
@@ -68,7 +69,7 @@ Settings.post = function(endpoint, data, cb, settings) {
         else {
             console.log(e);
         }
-    });
-}
+    });*/
+};
 
 module.exports = Settings;

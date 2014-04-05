@@ -1,8 +1,9 @@
 var _ = require('underscore'),
     crypto = require('crypto'),
-    time = require('time'),
-    qs = require('querystring');
+    microtime = require('microtime'),
+    qs = require('qs');
 
+var oldNonce = 0;
 
 var Signature = {
     sign: function(endpoint, data, secret) {
@@ -18,15 +19,14 @@ var Signature = {
         return b.toString('base64');
     },
     nonce: function() {
-        var now = new Date(), 
-            sec = time.time(),
-            usec = now.getMilliseconds() + '000',
-            date;
-        
-        date =  parseInt(sec + '' + usec);
+        var date = microtime.now();
 
+        if(oldNonce === date){
+        	console.log('nonce overlap');
+        }
+        
         return date;
     }
-}
+};
 
 module.exports = Signature;
